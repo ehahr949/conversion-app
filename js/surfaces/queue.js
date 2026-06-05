@@ -159,8 +159,12 @@
           }).join('') + '</select></label></div>' +
 
         /* photos */
-        (lead.photos && lead.photos.length ? '<div class="card card--pad-sm"><div class="card__title">Photos</div><div class="photo-thumbs">' +
-          lead.photos.map(function (p) { return '<div class="photo-thumb"' + (/^data:/.test(p) ? ' style="background-image:url(' + esc(p) + ')"' : '') + '>' + (/^data:/.test(p) ? '' : '🖼') + '</div>'; }).join('') +
+        (lead.photos && lead.photos.length ? '<div class="card card--pad-sm"><div class="card__title">Photos <span class="muted" style="margin-left:auto;font-weight:400">' + lead.photos.length + ' guided shots</span></div><div class="photo-thumbs">' +
+          lead.photos.map(function (p) {
+            var src = typeof p === 'string' ? p : (p && p.src) || ''; var lbl = (p && p.label) || '';
+            var has = /^data:/.test(src);
+            return '<div class="photo-thumb" title="' + esc(lbl) + '"' + (has ? ' style="background-image:url(' + esc(src) + ')"' : '') + '>' + (has ? '' : '🖼') + '</div>';
+          }).join('') +
           '</div>' + (lead.photoConsent ? '<p class="muted" style="font-size:.74rem;margin:8px 0 0">✓ Image consent on file</p>' : '') + '</div>' : '') +
 
         /* intake + source */

@@ -16,6 +16,22 @@
   /* A5 toggle: ?introVideo=off disables the intro video at the reward moment */
   var introVideoOn = new URLSearchParams(location.search).get('introVideo') !== 'off';
 
+  /* guided-photo sub-state (list ↔ capture), camera kept alive across shots */
+  var pg = { view: 'list', index: 0, stream: null, video: null, noCam: false, starting: false };
+  function getPhoto(id) {
+    for (var i = 0; i < state.photos.length; i++) if (state.photos[i].id === id) return state.photos[i];
+    return null;
+  }
+  function setPhoto(shot, src) {
+    var p = getPhoto(shot.id);
+    if (p) p.src = src;
+    else state.photos.push({ id: shot.id, label: shot.label, region: shot.region, src: src });
+  }
+  function stopPgCamera() {
+    if (pg.stream) { pg.stream.getTracks().forEach(function (t) { try { t.stop(); } catch (e) {} }); }
+    pg.stream = null; pg.video = null; pg.view = 'list'; pg.index = 0; pg.noCam = false;
+  }
+
   function buildSteps() {
     steps = ['welcome', 'goals'];
     if (vert.photoPolicy.required) steps.push('photos');
@@ -99,26 +115,8 @@
     },
 
     photos: function (body) {
-      var sels = vert.taxonomy.filter(function (t) { return state.taxonomySelections.indexOf(t.id) >= 0; });
-      var requests = [];
-      sels.forEach(function (t) { (t.photoRequests || []).forEach(function (r) { if (requests.indexOf(r) < 0) requests.push(r); }); });
-      if (!requests.length) requests = ['Front', 'Side'];
-      var tiles = requests.map(function (label, i) {
-        var have = state.photos[i];
-        return '<div class="photo-thumb" data-shot="' + i + '" title="' + esc(label) + '" ' +
-          (have ? 'style="background-image:url(' + esc(have) + ')"' : '') + '>' +
-          (have ? '' : '<div style="text-align:center"><div>＋</div><div style="font-size:.6rem">' + esc(label) + '</div></div>') + '</div>';
-      }).join('');
-      body.innerHTML =
-        '<h2>Add a few photos</h2>' +
-        '<p class="dim">These help ' + esc(cfg.provider.name) + ' give you specific, personal guidance. They’re private.</p>' +
-        '<div class="photo-thumbs" style="margin:16px 0">' + tiles + '</div>' +
-        '<input type="file" accept="image/*" capture="environment" data-photoinput hidden>' +
-        '<label class="check" style="margin-top:18px"><input type="checkbox" data-photoconsent ' + (state.photoConsent ? 'checked' : '') + '>' +
-          '<span>I consent to share these medical images with the practice for the purpose of my consultation. ' +
-          'I understand they are stored securely and used only for my care.</span></label>';
-      return { foot: contBtn(state.photoConsent, 'photoconsent') +
-        '<button class="btn btn--ghost btn--block" data-act="skipphotos" style="margin-top:8px">Skip photos for now</button>' };
+      var shots = R.photoguide.shotsFor(state);
+      return pg.view === 'capture' ? renderCapture(body, shots) : renderPhotoList(body, shots);
     },
 
     questions: function (body) {
@@ -199,6 +197,115 @@
     }
   };
 
+  /* ---- guided photo capture (per-treatment illustrated frames) ---------- */
+  function renderPhotoList(body, shots) {
+    var sels = vert.taxonomy.filter(function (t) { return state.taxonomySelections.indexOf(t.id) >= 0; })
+      .map(function (t) { return t.label; });
+    var done = shots.filter(function (s) { return getPhoto(s.id); }).length;
+    var cards = shots.map(function (s, i) {
+      var have = getPhoto(s.id);
+      return '<button class="pg-item' + (have ? ' is-done' : '') + '" data-pgopen="' + i + '">' +
+        '<span class="pg-item__frame' + (have ? ' has-shot' : '') + '">' +
+          (have && /^data:/.test(have.src) ? '<img src="' + esc(have.src) + '" alt="">' : R.photoguide.frameSVG(s)) + '</span>' +
+        '<span class="pg-item__txt"><strong>' + esc(s.label) + '</strong>' +
+          '<span class="dim">' + esc(s.instruction) + '</span></span>' +
+        '<span class="pg-item__status">' + (have ? '✓' : '＋') + '</span></button>';
+    }).join('');
+    var nextIdx = 0; for (var i = 0; i < shots.length; i++) { if (!getPhoto(shots[i].id)) { nextIdx = i; break; } }
+
+    body.innerHTML =
+      '<h2>Guided photos</h2>' +
+      '<p class="dim">Tailored to ' + esc(sels.join(' & ') || 'your goals') + '. We’ll line up each shot for you — ' +
+        esc(cfg.provider.name) + ' uses these to give specific, personal guidance. They’re private.</p>' +
+      '<div class="pg-progress-bar"><span>' + done + ' of ' + shots.length + ' done</span></div>' +
+      '<div class="pg-list">' + cards + '</div>' +
+      '<input type="file" accept="image/*" capture="environment" data-pgfile hidden>' +
+      '<label class="check" style="margin-top:16px"><input type="checkbox" data-photoconsent ' + (state.photoConsent ? 'checked' : '') + '>' +
+        '<span>' + esc(R.photoguide.consentText) + '</span></label>';
+
+    var hasPhotos = state.photos.length > 0;
+    var canContinue = !hasPhotos || state.photoConsent;
+    var primary = done < shots.length
+      ? '<button class="btn btn--accent btn--lg btn--block" data-pgopen="' + nextIdx + '">📷 ' + (done ? 'Continue photos' : 'Start guided photos') + '</button>'
+      : '';
+    return { foot: primary +
+      '<button class="btn btn--primary btn--lg btn--block" data-act="next"' + (canContinue ? '' : ' disabled') + ' style="margin-top:8px">' +
+        (hasPhotos ? 'Continue' : 'Continue') + '</button>' +
+      (hasPhotos && !state.photoConsent ? '<p class="muted center" style="font-size:.72rem;margin:6px 0 0">Please confirm the consent above to continue.</p>' : '') +
+      (hasPhotos ? '' : '<button class="btn btn--ghost btn--block" data-act="skipphotos" style="margin-top:8px">Skip photos for now</button>') };
+  }
+
+  function renderCapture(body, shots) {
+    var shot = shots[pg.index];
+    var have = getPhoto(shot.id);
+    var n = shots.length;
+    body.innerHTML =
+      '<div class="pg-cap">' +
+        '<div class="pg-cap__head"><button class="pg-cap__back" data-pgtolist>‹ All shots</button>' +
+          '<span class="pg-cap__count">Shot ' + (pg.index + 1) + ' / ' + n + '</span></div>' +
+        '<div class="pg-stage" data-camhost>' +
+          (have && /^data:/.test(have.src)
+            ? '<img class="pg-stage__shot" src="' + esc(have.src) + '" alt="">'
+            : (pg.noCam ? '<div class="pg-stage__nocam">Camera unavailable — upload a photo using the guide below.</div>' : '')) +
+          '<div class="pg-overlay' + (have ? ' is-dim' : '') + '">' + R.photoguide.frameSVG(shot) + '</div>' +
+        '</div>' +
+        '<div class="pg-instruct"><strong>' + esc(shot.label) + '</strong>' + esc(shot.instruction) + '</div>' +
+        '<input type="file" accept="image/*" capture="environment" data-pgfile hidden>' +
+      '</div>';
+
+    /* mount the live <video> (kept alive across shots) */
+    if (!have && !pg.noCam) {
+      var host = body.querySelector('[data-camhost]');
+      ensurePgCamera(function () {
+        if (pg.video && host && !host.contains(pg.video)) host.insertBefore(pg.video, host.firstChild);
+      });
+    }
+
+    var last = pg.index >= n - 1;
+    var foot;
+    if (have) {
+      foot = '<button class="btn btn--accent btn--lg btn--block" data-pgnext>' + (last ? 'Use & finish ✓' : 'Use & next shot →') + '</button>' +
+        '<button class="btn btn--ghost btn--block" data-pgretake style="margin-top:8px">↻ Retake</button>';
+    } else if (pg.noCam) {
+      foot = '<button class="btn btn--accent btn--lg btn--block" data-pgupload>⬆ Upload this photo</button>' +
+        '<button class="btn btn--ghost btn--block" data-pgskipshot style="margin-top:8px">Skip this shot</button>';
+    } else {
+      foot = '<button class="btn btn--accent btn--lg btn--block pg-shutter" data-pgshutter><span></span>Capture</button>' +
+        '<button class="btn btn--ghost btn--block" data-pgskipshot style="margin-top:8px">Skip this shot</button>';
+    }
+    return { foot: foot };
+  }
+
+  function ensurePgCamera(onReady) {
+    if (pg.stream) { onReady && onReady(); return; }
+    if (pg.starting) return;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { pg.noCam = true; render(); return; }
+    pg.starting = true;
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 1080 }, audio: false })
+      .then(function (stream) {
+        pg.starting = false; pg.stream = stream;
+        pg.video = document.createElement('video');
+        pg.video.className = 'pg-stage__video';
+        pg.video.srcObject = stream; pg.video.muted = true; pg.video.playsInline = true; pg.video.autoplay = true;
+        pg.video.play();
+        onReady && onReady();
+      })
+      .catch(function () { pg.starting = false; pg.noCam = true; render(); });
+  }
+
+  function capturePgShot(shots) {
+    var shot = shots[pg.index];
+    if (!pg.video || !pg.video.videoWidth) return;
+    var vw = pg.video.videoWidth, vh = pg.video.videoHeight;
+    var max = 1000, scale = Math.min(1, max / Math.max(vw, vh));
+    var cv = document.createElement('canvas');
+    cv.width = vw * scale; cv.height = vh * scale;
+    cv.getContext('2d').drawImage(pg.video, 0, 0, cv.width, cv.height);
+    setPhoto(shot, cv.toDataURL('image/jpeg', 0.82));
+    track('photos_added', { shot: shot.id, count: state.photos.length });
+    render();
+  }
+
   function howStep(n, t, d) {
     return '<div class="howto__step"><div class="howto__n">' + n + '</div><div><strong>' + t + '</strong><br><span class="dim" style="font-size:.85rem">' + d + '</span></div></div>';
   }
@@ -220,7 +327,7 @@
     function handleAct(act, e) {
       if (act === 'start') { track('flow_start', { source: channelName() }); persist('welcome'); next(); }
       else if (act === 'next') { stepAdvance(); }
-      else if (act === 'skipphotos') { persist('photos'); next(); }
+      else if (act === 'skipphotos') { stopPgCamera(); persist('photos'); next(); }
       else if (act === 'unlock') { doUnlock(); }
       else if (act === 'playintro') { playIntro(); }
       else if (act === 'finish') { persist('reward'); track('confirm', { lead: leadId }); next(); }
@@ -236,10 +343,29 @@
     U.on(root, 'click', '[data-q]', function (e, t) {
       state.intake[t.getAttribute('data-q')] = t.getAttribute('data-v'); render();
     });
-    U.on(root, 'click', '.photo-thumb', function (e, t) {
-      window._shotIdx = +t.getAttribute('data-shot');
-      root.querySelector('[data-photoinput]').click();
+
+    /* ---- guided photo controls ---- */
+    U.on(root, 'click', '[data-pgopen]', function (e, t) { pg.index = +t.getAttribute('data-pgopen'); pg.view = 'capture'; render(); });
+    U.on(root, 'click', '[data-pgtolist]', function () { pg.view = 'list'; render(); });
+    U.on(root, 'click', '[data-pgshutter]', function () { capturePgShot(R.photoguide.shotsFor(state)); });
+    U.on(root, 'click', '[data-pgretake]', function () {
+      var shots = R.photoguide.shotsFor(state); var p = getPhoto(shots[pg.index].id);
+      if (p) state.photos = state.photos.filter(function (x) { return x.id !== p.id; });
+      render();
     });
+    U.on(root, 'click', '[data-pgnext]', function () {
+      var shots = R.photoguide.shotsFor(state);
+      var nextUndone = -1;
+      for (var i = pg.index + 1; i < shots.length; i++) { if (!getPhoto(shots[i].id)) { nextUndone = i; break; } }
+      if (nextUndone >= 0) { pg.index = nextUndone; render(); }
+      else { pg.view = 'list'; render(); }
+    });
+    U.on(root, 'click', '[data-pgskipshot]', function () {
+      var shots = R.photoguide.shotsFor(state);
+      if (pg.index < shots.length - 1) { pg.index++; render(); } else { pg.view = 'list'; render(); }
+    });
+    U.on(root, 'click', '[data-pgupload]', function () { root.querySelector('[data-pgfile]').click(); });
+
     root.addEventListener('input', function (e) {
       var t = e.target;
       if (t.matches('[data-goaltext]')) state.goalText = t.value;
@@ -247,16 +373,16 @@
     });
     root.addEventListener('change', function (e) {
       var t = e.target;
-      if (t.matches('[data-photoconsent]')) { state.photoConsent = t.checked; var b = foot.querySelector('[data-act="next"]'); if (b) b.disabled = !t.checked; }
+      if (t.matches('[data-photoconsent]')) { state.photoConsent = t.checked; render(); }
       if (t.matches('[data-consent]')) { state.consent[t.getAttribute('data-consent')] = t.checked; validateContact(); }
-      if (t.matches('[data-photoinput]')) handlePhoto(t);
+      if (t.matches('[data-pgfile]')) handlePhoto(t);
     });
   }
 
   function stepAdvance() {
     var name = steps[stepIdx];
     if (name === 'goals') { persist('goals'); track('goals_set', { count: state.taxonomySelections.length }); }
-    else if (name === 'photos') { persist('photos'); track('photos_added', { count: state.photos.length }); }
+    else if (name === 'photos') { stopPgCamera(); persist('photos'); track('photos_done', { count: state.photos.length }); }
     else if (name === 'questions') { persist('questions'); track('questions_done', {}); }
     next();
   }
@@ -288,19 +414,21 @@
     setTimeout(function () { track('intro_video_completed', { lead: leadId }); }, 3000);
   }
 
-  /* camera/file: downscale before store (prototype convention §3.2) */
+  /* file-upload fallback (no camera): downscale before store (§3.2) */
   function handlePhoto(input) {
     var file = input.files && input.files[0]; if (!file) return;
-    var idx = window._shotIdx || 0;
+    var shots = R.photoguide.shotsFor(state);
+    var shot = shots[pg.index] || shots[0];
     var reader = new FileReader();
     reader.onload = function () {
       var img = new Image();
       img.onload = function () {
-        var max = 900, scale = Math.min(1, max / Math.max(img.width, img.height));
+        var max = 1000, scale = Math.min(1, max / Math.max(img.width, img.height));
         var cv = document.createElement('canvas');
         cv.width = img.width * scale; cv.height = img.height * scale;
         cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
-        state.photos[idx] = cv.toDataURL('image/jpeg', 0.8);
+        setPhoto(shot, cv.toDataURL('image/jpeg', 0.82));
+        track('photos_added', { shot: shot.id, count: state.photos.length });
         render();
       };
       img.src = reader.result;

@@ -22,7 +22,7 @@ Or just open `index.html` from disk (`file://`) — everything is client-side.
 | Page | What it is | Spec |
 |---|---|---|
 | `pricing.html` | Fake "Start" page → provisions the local account | REQUIREMENTS §3.4 |
-| `flow.html` | Patient capture flow — earned commitment + intro-video/recap reward | §8.2, §4 |
+| `flow.html` | Patient capture flow — earned commitment + intro-video/recap reward + **guided per-treatment photo capture** | §8.2, §4 |
 | `portal.html` | Delivered patient portal — watch video, book deposit | §8.5, §8.6 |
 | `index.html` | Provider console (SPA): **Queue**, **Performance**, **Settings**, **Studio** | §8.3, §8.4, §8.7, §8.8 |
 | `widgets.html` | Widget gallery (inline / floating / takeover) + copy-paste snippets | §8.1 |
@@ -55,6 +55,14 @@ fake sends, pixel fires (full payload), and instrumentation events.
   `--brand-*` tokens at runtime (`js/brand.js`), deriving WCAG-AA ink colors.
 - **`js/verticals.js`** — the plastics vertical as *data* (taxonomy, intake,
   qualify model, copy). **`js/seed.js`** — the authored account + 14 rich leads.
+- **`js/photoguide.js`** — per-treatment guided photo capture: each selected
+  procedure maps to an ordered set of shots, each with an illustrated SVG
+  silhouette frame (used as the live on-camera alignment overlay) and a
+  pose/expression instruction (e.g. face → resting/smiling/brows/profiles;
+  breast → front/oblique/side; body → front/oblique/side/back).
+- **Design system** — one warm-neutral, deep-evergreen token set
+  (`css/tokens.css`) modeled on calm modern finance apps; sans throughout,
+  soft shadows, generously rounded. White-label still re-themes patient surfaces.
 - **Built for real** (not faked): attribution parse-in + channel resolution
   (`js/attribution.js`), the offline-conversion export, the ScriptGen template
   (`js/scriptgen.js`), consent capture, and the whole conversion experience.

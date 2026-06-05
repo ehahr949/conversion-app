@@ -56,7 +56,7 @@
           navlink('queue', 'Queue') + navlink('performance', 'Performance') + navlink('settings', 'Settings') +
         '</nav>' +
         '<div class="appbar__right">' +
-          '<span class="muted" style="color:rgba(255,255,255,.6);font-size:.78rem">' + esc(cfg.brand.name) + '</span>' +
+          '<span class="muted" style="font-size:.78rem">' + esc(cfg.brand.name) + '</span>' +
           '<select data-role title="Acting as (role picker)">' + roleOpts(cfg) + '</select>' +
           '<button class="btn btn--sm" data-act="reset" title="Wipe + reseed the demo">↻ Reset demo</button>' +
         '</div>' +

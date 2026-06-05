@@ -1,96 +1,94 @@
 /* ============================================================================
  * RELAY — Design Tokens (tokens.css)
- * REQUIREMENTS §3.5. Two brand layers share ONE token system:
- *   (A) RELAY product brand  — customer-facing surfaces (console, settings, pricing)
- *   (B) White-label brand     — lead-facing surfaces (flow, recap, portal, widgets)
+ * Visual language modeled on calm, modern personal-finance apps (Monarch):
+ * warm neutral canvas, deep evergreen primary, restrained warm-clay accent,
+ * humanist sans throughout, generous spacing, barely-there shadows.
  *
- * Surfaces reference ROLE tokens (--color-accent, --radius-card …), never raw hex.
- * White-label theming overrides only the --brand-* tokens at runtime (js/brand.js);
- * everything else inherits the RELAY base.
+ * Two brand layers share ONE token system (REQUIREMENTS §3.5):
+ *   (A) RELAY product brand  — customer-facing (console, settings, pricing)
+ *   (B) White-label brand     — lead-facing (flow, recap, portal, widgets)
+ * Surfaces reference ROLE tokens; white-label overrides only --brand-* at runtime.
  * ========================================================================== */
 
 :root {
   /* --- RELAY product brand: source colors -------------------------------- */
-  --relay-primary:        #1d2a52;   /* deep, calm — credibility */
-  --relay-primary-700:    #16203e;
-  --relay-primary-300:    #5566a0;
-  --relay-accent:         #ff6a4d;   /* warm energy on CTAs */
-  --relay-accent-600:     #e9522f;
+  --relay-primary:        #1f4d3d;   /* deep evergreen — calm credibility */
+  --relay-primary-700:    #163a2d;
+  --relay-primary-300:    #6e9a8a;
+  --relay-accent:         #df8a5c;   /* warm clay — used sparingly */
+  --relay-accent-600:     #c9744a;
 
   /* --- Brand tokens (overridable per-account for white-label) ------------ */
-  /* Defaults point at the RELAY brand; js/brand.js rewrites these from config.brand */
   --brand-primary:        var(--relay-primary);
-  --brand-primary-ink:    #ffffff;   /* readable text on --brand-primary (derived at runtime) */
+  --brand-primary-ink:    #ffffff;
   --brand-accent:         var(--relay-accent);
-  --brand-accent-ink:     #ffffff;   /* readable text on --brand-accent (derived at runtime) */
+  --brand-accent-ink:     #ffffff;
 
-  /* --- Color roles ------------------------------------------------------- */
-  --color-bg:             #f6f7fb;
+  /* --- Color roles: warm neutral system ---------------------------------- */
+  --color-bg:             #f6f6f3;   /* soft warm canvas */
   --color-surface:        #ffffff;
-  --color-surface-2:      #f0f2f8;
-  --color-surface-sunk:   #e7eaf3;
-  --color-border:         #dfe3ee;
-  --color-border-strong:  #c4cbdd;
-  --color-ink:            #161a26;   /* primary text */
-  --color-ink-2:          #4a5168;   /* secondary text */
-  --color-ink-3:          #828aa3;   /* muted text */
+  --color-surface-2:      #f1f1ec;   /* subtle fills */
+  --color-surface-sunk:   #e9e8e2;
+  --color-border:         #e8e7e1;
+  --color-border-strong:  #d7d6ce;
+  --color-ink:            #1a2421;   /* deep slate-green, near-black */
+  --color-ink-2:          #59615c;
+  --color-ink-3:          #8b918c;
   --color-accent:         var(--brand-accent);
   --color-accent-ink:     var(--brand-accent-ink);
   --color-primary:        var(--brand-primary);
   --color-primary-ink:    var(--brand-primary-ink);
 
-  /* --- Semantic: SLA states --------------------------------------------- */
-  --color-ok:             #1fa971;
-  --color-ok-bg:          #e3f6ee;
-  --color-warn:           #e0941f;
-  --color-warn-bg:        #fbf0d9;
-  --color-over:           #e0533d;
-  --color-over-bg:        #fbe4df;
+  /* --- Semantic: SLA states (muted) -------------------------------------- */
+  --color-ok:             #2f8f66;
+  --color-ok-bg:          #e5f1ea;
+  --color-warn:           #bf8a2f;
+  --color-warn-bg:        #f6edd9;
+  --color-over:           #c5543c;
+  --color-over-bg:        #f7e3dd;
 
-  /* --- Semantic: qualification tiers ------------------------------------ */
-  --tier-hot:             #e0533d;
-  --tier-hot-bg:          #fbe4df;
-  --tier-warm:            #e0941f;
-  --tier-warm-bg:         #fbf0d9;
-  --tier-cold:            #5b82c9;
-  --tier-cold-bg:         #e7eef9;
+  /* --- Semantic: qualification tiers (muted) ----------------------------- */
+  --tier-hot:             #c5543c;
+  --tier-hot-bg:          #f7e3dd;
+  --tier-warm:            #bf8a2f;
+  --tier-warm-bg:         #f6edd9;
+  --tier-cold:            #5c7c9e;
+  --tier-cold-bg:         #e7eef4;
 
-  /* --- Type scale -------------------------------------------------------- */
-  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
-  --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --font-brand: var(--font-ui); /* white-label may override */
+  /* --- Type scale (humanist sans) ---------------------------------------- */
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: var(--font-ui);   /* Monarch is sans — no serif display */
+  --font-brand: var(--font-ui);     /* white-label may override */
 
-  --fs-display:   2.6rem;
-  --fs-h1:        1.9rem;
-  --fs-h2:        1.4rem;
-  --fs-h3:        1.15rem;
-  --fs-body:      0.975rem;
-  --fs-sm:        0.85rem;
-  --fs-xs:        0.74rem;
-  --lh-tight:     1.15;
-  --lh-body:      1.5;
+  --fs-display:   2.2rem;
+  --fs-h1:        1.7rem;
+  --fs-h2:        1.3rem;
+  --fs-h3:        1.08rem;
+  --fs-body:      0.95rem;
+  --fs-sm:        0.84rem;
+  --fs-xs:        0.73rem;
+  --lh-tight:     1.2;
+  --lh-body:      1.55;
 
   /* --- Spacing ----------------------------------------------------------- */
   --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
   --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
 
-  /* --- Radius ------------------------------------------------------------ */
+  /* --- Radius (generously rounded) --------------------------------------- */
   --radius-chip:   999px;
-  --radius-btn:    10px;
-  --radius-card:   16px;
-  --radius-sheet:  22px;
+  --radius-btn:    12px;
+  --radius-card:   18px;
+  --radius-sheet:  26px;
 
-  /* --- Shadow (soft-but-precise) ---------------------------------------- */
-  --shadow-sm:  0 1px 2px rgba(22,26,38,.06), 0 1px 3px rgba(22,26,38,.05);
-  --shadow-md:  0 4px 14px rgba(22,26,38,.08), 0 2px 4px rgba(22,26,38,.05);
-  --shadow-lg:  0 18px 50px rgba(22,26,38,.16), 0 6px 16px rgba(22,26,38,.10);
-  --shadow-phone: 0 30px 70px rgba(22,26,38,.28);
+  /* --- Shadow (barely-there) --------------------------------------------- */
+  --shadow-sm:  0 1px 2px rgba(20,28,24,.05);
+  --shadow-md:  0 2px 10px rgba(20,28,24,.06), 0 1px 3px rgba(20,28,24,.04);
+  --shadow-lg:  0 16px 44px rgba(20,28,24,.13), 0 4px 12px rgba(20,28,24,.07);
+  --shadow-phone: 0 30px 70px rgba(20,28,24,.22);
 
-  /* --- Motion (restrained) ---------------------------------------------- */
+  /* --- Motion (restrained) ----------------------------------------------- */
   --ease: cubic-bezier(.22,.61,.36,1);
   --dur-1: .12s;
   --dur-2: .22s;
   --dur-3: .4s;
 }
-
-/* Phones/landing surfaces opt into a darker canvas via .on-brand wrappers; see app.css */
