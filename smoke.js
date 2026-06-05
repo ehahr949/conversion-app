@@ -17,7 +17,7 @@ const BASE = 'http://localhost:8099';
 
   // ---- 1. Pages return content & render --------------------------------
   for (const [path, sel, tag] of [
-    ['/index.html', '.appbar', 'console'],
+    ['/index.html', '.sidebar', 'console'],
     ['/flow.html', '.phone__body', 'flow'],
     ['/portal.html', '.portal', 'portal'],
     ['/widgets.html', '.relay-inline', 'widgets'],

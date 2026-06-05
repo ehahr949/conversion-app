@@ -25,7 +25,7 @@
       },
       brand: {
         name: 'Lumière Plastic Surgery', logo: '', wordmark: 'Lumière',
-        primary: '#0f5e5a', accent: '#d98a4e', font: '',
+        primary: '#1a1a18', accent: '#ee6c2c', font: '',
         favicon: '', ogImage: '',
         videoFrame: { showLogo: true, lowerThird: true }
       },

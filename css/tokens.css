@@ -1,92 +1,98 @@
 /* ============================================================================
  * RELAY — Design Tokens (tokens.css)
- * Visual language modeled on calm, modern personal-finance apps (Monarch):
- * warm neutral canvas, deep evergreen primary, restrained warm-clay accent,
- * humanist sans throughout, generous spacing, barely-there shadows.
+ * Matched to the Monarch app (from product screenshots):
+ *   · warm off-white CANVAS, pure-white cards w/ big radius, NO borders,
+ *     separation via bg + hairline internal dividers, almost no shadow
+ *   · near-BLACK ink, warm-grey secondary text
+ *   · monarch ORANGE as the single pop accent (recap, AI, invite, active)
+ *   · GREEN only as positive/financial semantic; TEAL for links; grey pills
  *
  * Two brand layers share ONE token system (REQUIREMENTS §3.5):
- *   (A) RELAY product brand  — customer-facing (console, settings, pricing)
- *   (B) White-label brand     — lead-facing (flow, recap, portal, widgets)
- * Surfaces reference ROLE tokens; white-label overrides only --brand-* at runtime.
+ *   (A) RELAY product brand  — console, settings, pricing
+ *   (B) White-label brand     — flow, recap, portal, widgets (overrides --brand-*)
  * ========================================================================== */
 
 :root {
-  /* --- RELAY product brand: source colors -------------------------------- */
-  --relay-primary:        #1f4d3d;   /* deep evergreen — calm credibility */
-  --relay-primary-700:    #163a2d;
-  --relay-primary-300:    #6e9a8a;
-  --relay-accent:         #df8a5c;   /* warm clay — used sparingly */
-  --relay-accent-600:     #c9744a;
+  /* --- RELAY product source colors --------------------------------------- */
+  --relay-ink:            #1a1a18;   /* near-black — text + primary buttons */
+  --relay-ink-900:        #0d0d0c;
+  --relay-accent:         #ee6c2c;   /* monarch orange — the pop */
+  --relay-accent-600:     #d65a20;
+  --relay-accent-tint:    #fbe7da;
+  --relay-primary:        var(--relay-ink);  /* legacy alias */
 
-  /* --- Brand tokens (overridable per-account for white-label) ------------ */
-  --brand-primary:        var(--relay-primary);
+  /* --- Brand tokens (overridable per-account) ---------------------------- */
+  --brand-primary:        var(--relay-ink);
   --brand-primary-ink:    #ffffff;
   --brand-accent:         var(--relay-accent);
   --brand-accent-ink:     #ffffff;
 
-  /* --- Color roles: warm neutral system ---------------------------------- */
-  --color-bg:             #f6f6f3;   /* soft warm canvas */
-  --color-surface:        #ffffff;
-  --color-surface-2:      #f1f1ec;   /* subtle fills */
-  --color-surface-sunk:   #e9e8e2;
-  --color-border:         #e8e7e1;
-  --color-border-strong:  #d7d6ce;
-  --color-ink:            #1a2421;   /* deep slate-green, near-black */
-  --color-ink-2:          #59615c;
-  --color-ink-3:          #8b918c;
-  --color-accent:         var(--brand-accent);
-  --color-accent-ink:     var(--brand-accent-ink);
+  /* --- Color roles: warm off-white system -------------------------------- */
+  --color-bg:             #f4f2ed;   /* warm canvas */
+  --color-surface:        #ffffff;   /* cards */
+  --color-surface-2:      #eeebe3;   /* fills, pills, icon squares */
+  --color-surface-sunk:   #e6e2d8;
+  --color-border:         #eceae3;   /* hairline divider */
+  --color-border-strong:  #ddd9cf;
+  --color-ink:            #1a1a18;
+  --color-ink-2:          #87857d;   /* warm-grey secondary */
+  --color-ink-3:          #aba89f;   /* warm muted */
   --color-primary:        var(--brand-primary);
   --color-primary-ink:    var(--brand-primary-ink);
+  --color-accent:         var(--brand-accent);
+  --color-accent-ink:     var(--brand-accent-ink);
+  --color-accent-tint:    var(--relay-accent-tint);
+  --color-link:           #2e8daf;   /* teal links / secondary numbers */
+  --color-selected:       #f0ede5;   /* selected nav/list fill */
 
-  /* --- Semantic: SLA states (muted) -------------------------------------- */
-  --color-ok:             #2f8f66;
-  --color-ok-bg:          #e5f1ea;
-  --color-warn:           #bf8a2f;
-  --color-warn-bg:        #f6edd9;
-  --color-over:           #c5543c;
-  --color-over-bg:        #f7e3dd;
+  /* --- Semantic ---------------------------------------------------------- */
+  --color-ok:             #3aa869;   /* monarch green: positive / paid / on-time */
+  --color-ok-bg:          #e6f4ec;
+  --color-warn:           #c0902f;
+  --color-warn-bg:        #f6ecd5;
+  --color-over:           #c2533c;
+  --color-over-bg:        #f6e2da;
 
-  /* --- Semantic: qualification tiers (muted) ----------------------------- */
-  --tier-hot:             #c5543c;
-  --tier-hot-bg:          #f7e3dd;
-  --tier-warm:            #bf8a2f;
-  --tier-warm-bg:         #f6edd9;
-  --tier-cold:            #5c7c9e;
-  --tier-cold-bg:         #e7eef4;
+  /* --- Qualification tiers ----------------------------------------------- */
+  --tier-hot:             #c2533c;
+  --tier-hot-bg:          #f6e2da;
+  --tier-warm:            #c0902f;
+  --tier-warm-bg:         #f6ecd5;
+  --tier-cold:            #6a7f8c;
+  --tier-cold-bg:         #e9edf0;
 
-  /* --- Type scale (humanist sans) ---------------------------------------- */
+  /* --- Type -------------------------------------------------------------- */
   --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --font-display: var(--font-ui);   /* Monarch is sans — no serif display */
-  --font-brand: var(--font-ui);     /* white-label may override */
+  --font-display: var(--font-ui);
+  --font-brand: var(--font-ui);
 
-  --fs-display:   2.2rem;
-  --fs-h1:        1.7rem;
-  --fs-h2:        1.3rem;
-  --fs-h3:        1.08rem;
-  --fs-body:      0.95rem;
-  --fs-sm:        0.84rem;
-  --fs-xs:        0.73rem;
-  --lh-tight:     1.2;
+  --fs-display:   2.4rem;
+  --fs-h1:        1.6rem;
+  --fs-h2:        1.22rem;
+  --fs-h3:        1.02rem;
+  --fs-body:      0.94rem;
+  --fs-sm:        0.82rem;
+  --fs-xs:        0.72rem;
+  --lh-tight:     1.16;
   --lh-body:      1.55;
 
   /* --- Spacing ----------------------------------------------------------- */
   --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
   --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
 
-  /* --- Radius (generously rounded) --------------------------------------- */
-  --radius-chip:   999px;
+  /* --- Radius (Monarch is generously rounded) ---------------------------- */
+  --radius-pill:   999px;
   --radius-btn:    12px;
-  --radius-card:   18px;
-  --radius-sheet:  26px;
+  --radius-card:   20px;
+  --radius-sheet:  28px;
 
-  /* --- Shadow (barely-there) --------------------------------------------- */
-  --shadow-sm:  0 1px 2px rgba(20,28,24,.05);
-  --shadow-md:  0 2px 10px rgba(20,28,24,.06), 0 1px 3px rgba(20,28,24,.04);
-  --shadow-lg:  0 16px 44px rgba(20,28,24,.13), 0 4px 12px rgba(20,28,24,.07);
-  --shadow-phone: 0 30px 70px rgba(20,28,24,.22);
+  /* --- Shadow (whisper-soft; rely on white-on-warm contrast) ------------- */
+  --shadow-sm:  0 1px 3px rgba(26,26,24,.05);
+  --shadow-md:  0 6px 22px rgba(26,26,24,.07);
+  --shadow-lg:  0 26px 64px rgba(26,26,24,.15);
+  --shadow-phone: 0 30px 80px rgba(26,26,24,.16);
 
-  /* --- Motion (restrained) ----------------------------------------------- */
+  /* --- Motion ------------------------------------------------------------ */
   --ease: cubic-bezier(.22,.61,.36,1);
   --dur-1: .12s;
   --dur-2: .22s;

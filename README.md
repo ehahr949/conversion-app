@@ -60,9 +60,11 @@ fake sends, pixel fires (full payload), and instrumentation events.
   silhouette frame (used as the live on-camera alignment overlay) and a
   pose/expression instruction (e.g. face → resting/smiling/brows/profiles;
   breast → front/oblique/side; body → front/oblique/side/back).
-- **Design system** — one warm-neutral, deep-evergreen token set
-  (`css/tokens.css`) modeled on calm modern finance apps; sans throughout,
-  soft shadows, generously rounded. White-label still re-themes patient surfaces.
+- **Design system** — one token set (`css/tokens.css`) matched to the Monarch
+  app: warm off-white canvas, pure-white cards with big radius and no borders,
+  near-black ink + black buttons, monarch-orange as the single pop accent,
+  green only as a positive/financial semantic. The console uses a left sidebar
+  shell. White-label still re-themes patient surfaces via `--brand-*`.
 - **Built for real** (not faked): attribution parse-in + channel resolution
   (`js/attribution.js`), the offline-conversion export, the ScriptGen template
   (`js/scriptgen.js`), consent capture, and the whole conversion experience.

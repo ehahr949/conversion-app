@@ -68,8 +68,8 @@
       sub: d('sub', 'Answer a few quick questions and get a video about your specific goals — usually within 24 hours.'),
       cta: d('cta', 'Start my consult'),
       provider: d('provider', 'Dr. Mara Vance'),
-      primary: d('primary', '#0f5e5a'),
-      accent: d('accent', '#d98a4e'),
+      primary: d('primary', '#1a1a18'),
+      accent: d('accent', '#ee6c2c'),
       target: d('target', FLOW)
     };
   }
