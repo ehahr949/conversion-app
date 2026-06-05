@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RELAY — Widget gallery</title>
+  <link rel="stylesheet" href="css/tokens.css?v=1">
+  <link rel="stylesheet" href="css/app.css?v=1">
+</head>
+<body>
+  <header class="appbar">
+    <a class="appbar__brand" href="index.html"><span class="appbar__logo display">R</span> RELAY</a>
+    <nav><a href="index.html#/queue">Console</a><a href="index.html#/settings">Settings</a></nav>
+  </header>
+
+  <div class="wrap">
+    <div class="page-head"><div><h1>The CTA family — widgets &amp; embeds</h1>
+      <p>Drop a snippet on whatever you already run. Each captures attribution on load, tracks the tap, and opens the patient flow.</p></div></div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start" id="grid"></div>
+
+    <div class="card" style="margin-top:18px">
+      <div class="card__title">Link-in-bio</div>
+      <p class="muted" style="margin-top:0">A hosted Linktree-style page for social profiles, with per-tap tracking.</p>
+      <a class="btn btn--accent" href="bio.html" target="_blank">Open link-in-bio page ↗</a>
+    </div>
+  </div>
+
+  <script src="embed.js?v=1"></script>
+  <script>
+    var U = { esc: function (s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); } };
+    var grid = document.getElementById('grid');
+
+    var WIDGETS = [
+      { type: 'inline', title: 'Inline card', desc: 'A CTA block inside a page.' },
+      { type: 'floating', title: 'Floating pill', desc: 'A persistent bottom-right CTA (shown live at the corner of this page).' },
+      { type: 'takeover', title: 'Full-page / takeover', desc: 'For a dedicated landing page.' }
+    ];
+
+    function snippet(type) {
+      if (type === 'floating') {
+        return '<script src="https://app.relay.co/embed.js"\n        data-relay-widget="floating"\n        data-cta="Start my consult"\n        data-primary="#0f5e5a" data-accent="#d98a4e"><\/script>';
+      }
+      return '<div data-relay-widget="' + type + '"\n     data-headline="See what’s possible — a personal video from Dr. Vance"\n     data-cta="Start my consult"\n     data-primary="#0f5e5a" data-accent="#d98a4e"></div>\n<script src="https://app.relay.co/embed.js"><\/script>';
+    }
+
+    WIDGETS.forEach(function (w) {
+      var card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = '<div class="card__title">' + w.title + '</div><p class="muted" style="margin-top:0;font-size:.85rem">' + w.desc + '</p>' +
+        '<div class="live" style="min-height:60px;margin:12px 0;display:flex;justify-content:center"></div>' +
+        '<div class="card__title" style="font-size:.8rem;margin-top:10px">Copy-paste snippet</div>' +
+        '<pre class="script">' + U.esc(snippet(w.type)) + '</pre>' +
+        '<button class="btn btn--ghost btn--sm" data-copy>Copy snippet</button>';
+      grid.appendChild(card);
+      if (w.type !== 'floating') {
+        RelayWidget.render(card.querySelector('.live'), { type: w.type, target: 'flow.html' });
+      } else {
+        card.querySelector('.live').innerHTML = '<span class="muted">→ see the live pill at the bottom-right</span>';
+      }
+      card.querySelector('[data-copy]').addEventListener('click', function () {
+        navigator.clipboard && navigator.clipboard.writeText(snippet(w.type));
+        this.textContent = 'Copied!'; var b = this; setTimeout(function(){ b.textContent = 'Copy snippet'; }, 1500);
+      });
+    });
+
+    /* live floating pill on this page */
+    RelayWidget.render(null, { type: 'floating', target: 'flow.html', cta: 'Start my consult' });
+  </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RELAY — Pricing</title>
+  <link rel="stylesheet" href="css/tokens.css?v=1">
+  <link rel="stylesheet" href="css/app.css?v=1">
+</head>
+<body>
+  <header class="appbar">
+    <a class="appbar__brand" href="pricing.html"><span class="appbar__logo display">R</span> RELAY</a>
+    <nav><a href="index.html#/queue">Console demo</a></nav>
+  </header>
+
+  <div class="wrap" style="max-width:980px">
+    <div class="center" style="margin:30px 0 36px">
+      <h1 class="display" style="font-size:2.6rem;margin-bottom:8px">The conversion layer for high-value consults</h1>
+      <p class="dim" style="max-width:620px;margin:0 auto;font-size:1.05rem">Your traffic lands on RELAY instead of a “Book a consult” button — and converts dramatically better, with the attribution loop that makes your ad spend smarter over time.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px" id="plans"></div>
+
+    <p class="center muted" style="font-size:.82rem;margin-top:24px">
+      This is a demo “checkout”. In production, clicking a plan opens <strong>Stripe Checkout</strong>; on payment, a webhook provisions your account (§3.4).
+      Here it instantly creates the local sample plastics account so you can explore.
+    </p>
+  </div>
+
+  <script src="js/util.js?v=1"></script>
+  <script src="js/instrument.js?v=1"></script>
+  <script src="js/verticals.js?v=1"></script>
+  <script src="js/qualify.js?v=1"></script>
+  <script src="js/attribution.js?v=1"></script>
+  <script src="js/store.js?v=1"></script>
+  <script src="js/seed.js?v=1"></script>
+  <script>
+    var esc = RELAY.util.esc;
+    var PLANS = [
+      { name: 'Solo', price: '$299', per: '/mo', feats: ['1 provider', 'Patient flow + portal', 'Email + SMS delivery', 'Attribution export'] },
+      { name: 'Practice', price: '$699', per: '/mo', best: true, feats: ['Up to 5 providers', 'Everything in Solo', 'Deposit-to-reserve booking', 'Performance + ROAS by channel'] },
+      { name: 'Group', price: 'Custom', per: '', feats: ['Multi-location', 'Priority support', 'Onboarding concierge', 'Founder pricing available'] }
+    ];
+    document.getElementById('plans').innerHTML = PLANS.map(function (p) {
+      return '<div class="card"' + (p.best ? ' style="border-color:var(--relay-accent);box-shadow:var(--shadow-md)"' : '') + '>' +
+        (p.best ? '<span class="pill pill--ok" style="margin-bottom:8px">Most popular</span>' : '') +
+        '<h2>' + esc(p.name) + '</h2>' +
+        '<div class="num" style="font-size:2.2rem;font-weight:650">' + esc(p.price) + '<span class="muted" style="font-size:1rem">' + esc(p.per) + '</span></div>' +
+        '<ul style="list-style:none;padding:0;margin:14px 0;font-size:.9rem">' + p.feats.map(function (f) { return '<li style="padding:5px 0">✓ ' + esc(f) + '</li>'; }).join('') + '</ul>' +
+        '<button class="btn ' + (p.best ? 'btn--accent' : 'btn--primary') + ' btn--block" data-plan="' + esc(p.name) + '">Start with ' + esc(p.name) + '</button>' +
+      '</div>';
+    }).join('');
+
+    document.getElementById('plans').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-plan]'); if (!b) return;
+      /* fake provisioning: seed the local account, then go to onboarding */
+      RELAY.store.seed();
+      RELAY.store.saveConfig({ account: { plan: b.getAttribute('data-plan'), status: 'active' } });
+      window.location.href = 'index.html#/settings';
+    });
+  </script>
+</body>
+</html>

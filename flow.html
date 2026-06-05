@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <title>Your consult</title>
+  <link rel="stylesheet" href="css/tokens.css?v=1">
+  <link rel="stylesheet" href="css/app.css?v=1">
+</head>
+<body>
+  <div class="on-brand phone-stage">
+    <div class="phone" id="phone">
+      <div class="brandbar" data-brandbar></div>
+      <div class="phone__top"><div class="phone__progress"><i></i></div></div>
+      <div class="phone__body"></div>
+      <div class="phone__foot"></div>
+    </div>
+  </div>
+
+  <script src="js/util.js?v=1"></script>
+  <script src="js/instrument.js?v=1"></script>
+  <script src="js/devconsole.js?v=1"></script>
+  <script src="js/verticals.js?v=1"></script>
+  <script src="js/qualify.js?v=1"></script>
+  <script src="js/attribution.js?v=1"></script>
+  <script src="js/store.js?v=1"></script>
+  <script src="js/seed.js?v=1"></script>
+  <script src="js/brand.js?v=1"></script>
+  <script src="js/scriptgen.js?v=1"></script>
+  <script src="js/flow.js?v=1"></script>
+  <script>
+    RELAY.devconsole.mount();
+    RELAY.flow.init(document.getElementById('phone'));
+  </script>
+</body>
+</html>

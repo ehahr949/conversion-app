@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Link in bio</title>
+  <link rel="stylesheet" href="css/tokens.css?v=1">
+  <link rel="stylesheet" href="css/app.css?v=1">
+</head>
+<body>
+  <div class="on-brand" style="min-height:100vh;padding:40px 16px">
+    <div id="bio" style="max-width:420px;margin:0 auto"></div>
+  </div>
+
+  <script src="js/util.js?v=1"></script>
+  <script src="js/instrument.js?v=1"></script>
+  <script src="js/devconsole.js?v=1"></script>
+  <script src="js/verticals.js?v=1"></script>
+  <script src="js/qualify.js?v=1"></script>
+  <script src="js/attribution.js?v=1"></script>
+  <script src="js/store.js?v=1"></script>
+  <script src="js/seed.js?v=1"></script>
+  <script src="js/brand.js?v=1"></script>
+  <script>
+    var R = RELAY, U = R.util, esc = U.esc;
+    R.store.seed();
+    var cfg = R.store.config();
+    R.brand.applyBrand(cfg.brand);
+    var source = R.attribution.parseSource();
+
+    function tap(label, target) {
+      R.instrument.track('widget_tap', { widget: 'link-in-bio', headline: label });
+    }
+
+    var p = cfg.provider, b = cfg.brand;
+    var primaryLink = { label: '🎥 Get my personal consult video', target: 'flow.html?from=link-in-bio' };
+    var links = (cfg.links || []);
+
+    document.getElementById('bio').innerHTML =
+      '<div style="text-align:center;color:#fff;margin-bottom:24px">' +
+        '<div class="avatar avatar--lg" style="margin:0 auto 12px;width:84px;height:84px;font-size:1.6rem;background:rgba(255,255,255,.18)">' + esc(U.initials(p.name)) + '</div>' +
+        '<h1 style="margin:0;color:#fff" class="display">' + esc(b.name) + '</h1>' +
+        '<p style="opacity:.85;margin:4px 0 0">' + esc(p.name) + ', ' + esc(p.credential) + ' · ★ ' + esc(p.rating) + '</p>' +
+      '</div>' +
+      '<a class="btn btn--accent btn--lg btn--block" href="' + esc(primaryLink.target) + '" data-primary style="margin-bottom:16px">' + esc(primaryLink.label) + '</a>' +
+      '<div class="linklist">' + links.map(function (l) {
+        return '<a href="' + esc(l.url) + '" target="_blank" rel="noopener" data-link="' + esc(l.id) + '" style="background:rgba(255,255,255,.95)"><span>' + esc(l.icon || '🔗') + '</span> ' + esc(l.label) + '</a>';
+      }).join('') + '</div>' +
+      '<p style="text-align:center;color:rgba(255,255,255,.7);font-size:.74rem;margin-top:24px">Powered by RELAY</p>';
+
+    document.getElementById('bio').addEventListener('click', function (e) {
+      var pr = e.target.closest('[data-primary]'); var lk = e.target.closest('[data-link]');
+      if (pr) tap(primaryLink.label);
+      if (lk) R.instrument.track('widget_tap', { widget: 'link-in-bio', headline: lk.getAttribute('data-link') });
+    });
+
+    R.devconsole.mount();
+    R.instrument.track('widget_view', { widget: 'link-in-bio' });
+  </script>
+</body>
+</html>
