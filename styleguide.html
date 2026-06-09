@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RELAY — Design System</title>
-  <link rel="stylesheet" href="css/tokens.css?v=4">
-  <link rel="stylesheet" href="css/app.css?v=4">
+  <link rel="stylesheet" href="css/tokens.css?v=5">
+  <link rel="stylesheet" href="css/app.css?v=5">
 </head>
 <body>
   <header class="appbar">
@@ -61,32 +61,39 @@
       </div>
     </section>
 
-    <!-- CHIPS / PILLS / TAGS -->
+    <!-- STATUS / CHIPS / TAGS -->
     <section class="sg-section">
-      <span class="caps">Components</span><h2>Chips, pills &amp; tags</h2>
+      <span class="caps">Components</span><h2>Status &amp; selection</h2>
       <div class="sg-tile">
+        <div class="caps" style="margin-bottom:6px">Status — text + color (preferred)</div>
+        <p class="dim" style="margin:0 0 14px;font-size:var(--fs-sm);max-width:600px">Default to quiet typographic status: a colored label, a colored number, or a left rail — not a filled pill. This keeps dense lists calm.</p>
+        <div class="sg-row" style="margin-bottom:22px">
+          <span class="tier-tag tier-tag--hot">Hot · 92</span>
+          <span class="tier-tag tier-tag--warm">Warm · 58</span>
+          <span class="tier-tag tier-tag--cold">Cold · 30</span>
+          <span class="dim" style="font-weight:600">In review</span>
+          <span class="pos" style="font-weight:600">Booked</span>
+          <span class="sla sla--over">4h over</span>
+          <span class="sla sla--ok">21h left</span>
+        </div>
         <div class="caps" style="margin-bottom:10px">Selectable chips</div>
-        <div class="sg-row" style="margin-bottom:20px">
+        <div class="sg-row" style="margin-bottom:22px">
           <button class="chip chip--on">👃 Rhinoplasty</button>
           <button class="chip">🌸 Breast aug</button>
           <button class="chip">💗 Mommy makeover</button>
-          <button class="chip">💉 Injectables</button>
         </div>
-        <div class="caps" style="margin-bottom:10px">Status pills</div>
-        <div class="sg-row" style="margin-bottom:20px">
-          <span class="pill pill--hot">hot · 92</span>
-          <span class="pill pill--warm">warm · 58</span>
-          <span class="pill pill--cold">cold · 30</span>
-          <span class="pill pill--ok"><span class="dot"></span>On time</span>
-          <span class="pill pill--over"><span class="dot"></span>4h over</span>
-          <span class="pill pill--source">Instagram</span>
+        <div class="caps" style="margin-bottom:6px">Badges — use sparingly</div>
+        <p class="dim" style="margin:0 0 12px;font-size:var(--fs-sm);max-width:600px">Reach for a filled pill only when a single state needs to pop (one per row, max). Otherwise use the text styles above.</p>
+        <div class="sg-row" style="margin-bottom:22px">
+          <span class="pill">Pending</span>
+          <span class="pill pill--ok">Paid</span>
+          <span class="pill pill--over">Bounced</span>
         </div>
         <div class="caps" style="margin-bottom:10px">Tags (colored dot)</div>
         <div class="sg-row">
           <span class="tag"><span class="dot" style="background:var(--cat-3)"></span>Subscription</span>
           <span class="tag"><span class="dot" style="background:var(--cat-10)"></span>DoorDash</span>
           <span class="tag"><span class="dot" style="background:var(--cat-2)"></span>Etsy</span>
-          <span class="tag"><span class="dot" style="background:var(--cat-5)"></span>Reimbursable</span>
         </div>
       </div>
     </section>

@@ -132,10 +132,21 @@ textarea { min-height: 84px; resize: vertical; }
 .qrow:last-child { border-bottom: none; }
 .qrow:hover { background: var(--color-surface-2); }
 .qrow__mid { min-width: 0; }
-.qrow__name { font-weight: 650; display: flex; align-items: center; gap: 8px; }
+.qrow__lead { display: flex; gap: 12px; align-items: center; }
+.qrow__name { font-weight: 650; display: flex; align-items: center; gap: 9px; }
+.qrow__sub { font-size: var(--fs-sm); color: var(--color-ink-2); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .qrow__meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 5px; }
-.qrow__right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+.qrow__right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.qrow__status { font-size: var(--fs-sm); color: var(--color-ink-2); font-weight: 600; }
+.qrow__status.pos { color: var(--color-ok); }
 .qrow__time { font-size: var(--fs-xs); color: var(--color-ink-3); }
+/* tier as quiet colored text (no filled pill) */
+.tier-tag { font-size: var(--fs-xs); font-weight: 700; letter-spacing: .01em; }
+.tier-tag--hot { color: var(--tier-hot); } .tier-tag--warm { color: var(--tier-warm); } .tier-tag--cold { color: var(--tier-cold); }
+/* SLA as colored text, loud only when it matters */
+.sla { font-size: var(--fs-xs); font-weight: 650; }
+.sla--over { color: var(--color-over); } .sla--warn { color: var(--color-warn); }
+.sla--ok { color: var(--color-ink-3); } .sla--none { display: none; }
 .tier-rail { width: 4px; height: 38px; border-radius: 4px; }
 .tier-rail--hot { background: var(--tier-hot); } .tier-rail--warm { background: var(--tier-warm); } .tier-rail--cold { background: var(--tier-cold); }
 .qcard-empty { padding: var(--sp-6); text-align: center; color: var(--color-ink-3); }

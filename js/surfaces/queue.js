@@ -75,30 +75,31 @@
 
   function row(l) {
     var name = (l.contact && l.contact.firstName) || 'Anonymous lead';
-    var chips = l.taxonomySelections.slice(0, 3).map(function (id) {
+    var procs = l.taxonomySelections.slice(0, 2).map(function (id) {
       var t = S.vertical().taxonomy.filter(function (x) { return x.id === id; })[0];
-      return t ? '<span class="pill pill--source">' + esc(t.label) + '</span>' : '';
-    }).join('');
+      return t ? t.label : '';
+    }).filter(Boolean).join(', ');
     var channel = R.attribution.resolveChannel(l.source, S.config().sourceAliases);
-    var sla = l.slaHoursLeft;
-    var slaState = S.slaState(sla);
-    var slaPill = sla == null ? '' :
-      '<span class="pill pill--' + slaState + '"><span class="dot"></span>' +
-        (sla < 0 ? Math.abs(sla).toFixed(1) + 'h over' : sla.toFixed(1) + 'h left') + '</span>';
-    var dropped = l.furthestStep !== 'confirm' && !(l.contact && l.contact.email)
-      ? '<span class="pill pill--warn">dropped at ' + esc(l.furthestStep) + '</span>' : '';
+    var sub = [procs, channel].filter(Boolean).join('  ·  ');
+    if (l.furthestStep !== 'confirm' && !(l.contact && l.contact.email)) sub += '  ·  dropped at ' + l.furthestStep;
+
+    var sla = l.slaHoursLeft, slaState = S.slaState(sla);
+    var slaText = sla == null ? '' :
+      '<span class="sla sla--' + slaState + '">' + (sla < 0 ? Math.abs(sla).toFixed(1) + 'h over' : sla.toFixed(1) + 'h left') + '</span>';
     var st = S.statusMeta(l.status);
+    var tier = l.qual.tier, tierLabel = tier.charAt(0).toUpperCase() + tier.slice(1);
 
     return '<div class="qrow" data-open="' + esc(l.id) + '">' +
-      '<div style="display:flex;gap:12px;align-items:center"><div class="tier-rail tier-rail--' + l.qual.tier + '"></div>' +
+      '<div class="qrow__lead"><div class="tier-rail tier-rail--' + tier + '"></div>' +
       '<div class="avatar">' + esc(U.initials(name)) + '</div></div>' +
       '<div class="qrow__mid">' +
-        '<div class="qrow__name">' + esc(name) + ' <span class="pill pill--' + l.qual.tier + '">' + l.qual.tier + ' · ' + l.qual.score + '</span></div>' +
-        '<div class="qrow__meta">' + chips +
-          '<span class="pill pill--source">' + esc(channel) + '</span>' + dropped + '</div>' +
+        '<div class="qrow__name">' + esc(name) +
+          ' <span class="tier-tag tier-tag--' + tier + '">' + tierLabel + ' · ' + l.qual.score + '</span></div>' +
+        '<div class="qrow__sub">' + esc(sub) + '</div>' +
       '</div>' +
       '<div class="qrow__right">' +
-        '<span class="pill">' + esc(st.label) + '</span>' + slaPill +
+        '<span class="qrow__status' + (l.status === 'booked' ? ' pos' : '') + '">' + esc(st.label) + '</span>' +
+        slaText +
         '<span class="qrow__time">' + esc(U.timeAgo(l.createdAt)) + '</span>' +
       '</div></div>';
   }
@@ -137,8 +138,9 @@
     var channel = R.attribution.resolveChannel(lead.source, cfg.sourceAliases);
     var script = R.scriptgen.generate(lead, cfg);
 
+    var tierLabel = lead.qual.tier.charAt(0).toUpperCase() + lead.qual.tier.slice(1);
     return '<div class="drawer__head"><div class="avatar avatar--lg">' + esc(U.initials(name)) + '</div>' +
-        '<div><strong>' + esc(name) + '</strong> <span class="pill pill--' + lead.qual.tier + '">' + lead.qual.tier + '</span><br>' +
+        '<div><strong>' + esc(name) + '</strong> <span class="tier-tag tier-tag--' + lead.qual.tier + '">' + tierLabel + ' · ' + lead.qual.score + '</span><br>' +
         '<span class="muted" style="font-size:.82rem">' + esc(channel) + ' · ' + esc(U.timeAgo(lead.createdAt)) + '</span></div>' +
         '<button class="drawer__x" data-act="close">✕</button></div>' +
       '<div class="drawer__body">' +
