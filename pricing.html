@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RELAY — Pricing</title>
-  <link rel="stylesheet" href="css/tokens.css?v=6">
-  <link rel="stylesheet" href="css/funnel.css?v=6">
+  <link rel="stylesheet" href="css/tokens.css?v=7">
+  <link rel="stylesheet" href="css/funnel.css?v=7">
 </head>
 <body>
   <header class="appbar">
@@ -27,13 +27,13 @@
     </p>
   </div>
 
-  <script src="js/util.js?v=6"></script>
-  <script src="js/instrument.js?v=6"></script>
-  <script src="js/verticals.js?v=6"></script>
-  <script src="js/qualify.js?v=6"></script>
-  <script src="js/attribution.js?v=6"></script>
-  <script src="js/store.js?v=6"></script>
-  <script src="js/seed.js?v=6"></script>
+  <script src="js/util.js?v=7"></script>
+  <script src="js/instrument.js?v=7"></script>
+  <script src="js/verticals.js?v=7"></script>
+  <script src="js/qualify.js?v=7"></script>
+  <script src="js/attribution.js?v=7"></script>
+  <script src="js/store.js?v=7"></script>
+  <script src="js/seed.js?v=7"></script>
   <script>
     var esc = RELAY.util.esc;
     var PLANS = [
@@ -43,7 +43,7 @@
     ];
     document.getElementById('plans').innerHTML = PLANS.map(function (p) {
       return '<div class="card"' + (p.best ? ' style="border-color:var(--relay-accent);box-shadow:var(--shadow-md)"' : '') + '>' +
-        (p.best ? '<span class="pill pill--ok" style="margin-bottom:8px">Most popular</span>' : '') +
+        (p.best ? '<span class="pill pill--accent" style="margin-bottom:8px">Most popular</span>' : '') +
         '<h2>' + esc(p.name) + '</h2>' +
         '<div class="num" style="font-size:2.2rem;font-weight:650">' + esc(p.price) + '<span class="muted" style="font-size:1rem">' + esc(p.per) + '</span></div>' +
         '<ul style="list-style:none;padding:0;margin:14px 0;font-size:.9rem">' + p.feats.map(function (f) { return '<li style="padding:5px 0">✓ ' + esc(f) + '</li>'; }).join('') + '</ul>' +

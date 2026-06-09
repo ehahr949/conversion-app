@@ -76,6 +76,8 @@ textarea { min-height: 92px; resize: vertical; }
 .avatar { width: 44px; height: 44px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--brand-primary); color: var(--brand-primary-ink); font-weight: 700; }
 .avatar--lg { width: 76px; height: 76px; font-size: 1.5rem; }
 .pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 13px; border-radius: 999px; font-size: .8rem; font-weight: 600; background: #fff; color: var(--f-ink-2); border: 1px solid var(--f-line); }
+/* the single accent badge — reuses the brand accent to draw the eye (use sparingly) */
+.pill--accent { background: color-mix(in srgb, var(--brand-accent) 14%, #fff); color: var(--brand-accent); border-color: transparent; }
 .card { background: #fff; border: 1px solid var(--f-line); border-radius: var(--f-radius); padding: 22px; }
 .card--pad-sm { padding: 16px; }
 
