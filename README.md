@@ -28,6 +28,7 @@ Or just open `index.html` from disk (`file://`) — everything is client-side.
 | `widgets.html` | Widget gallery (inline / floating / takeover) + copy-paste snippets | §8.1 |
 | `bio.html` | Link-in-bio page | §8.1 |
 | `embed.js` | The embeddable widget script | §8.1 |
+| `styleguide.html` | Living design-system reference — every token + component on one page | — |
 
 The console routes by hash: `#/queue` · `#/performance` · `#/settings` ·
 `#/studio/<leadId>` · `#/studio-intro`.

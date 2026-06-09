@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RELAY — Design System</title>
+  <link rel="stylesheet" href="css/tokens.css?v=4">
+  <link rel="stylesheet" href="css/app.css?v=4">
+</head>
+<body>
+  <header class="appbar">
+    <span class="appbar__brand"><span class="appbar__logo display">R</span> RELAY · Design System</span>
+    <nav><a href="index.html#/queue">Console</a><a href="flow.html">Patient flow</a></nav>
+  </header>
+
+  <div class="sg-wrap">
+    <div class="sg-tile" style="margin-bottom:40px">
+      <div class="caps">Reusable component library</div>
+      <h1 class="display" style="font-size:2rem;margin:6px 0 8px">A Monarch-matched design system</h1>
+      <p class="dim" style="margin:0;max-width:680px">Warm light-grey field, white cards, near-black ink, orange as the single pop, green/red financial semantics, teal links, a category palette. Everything below is driven by <code>css/tokens.css</code> + <code>css/app.css</code> — drop both into any prototype, use the role tokens and these classes, and theme per brand via the <code>--brand-*</code> variables.</p>
+    </div>
+
+    <!-- COLORS -->
+    <section class="sg-section">
+      <span class="caps">Foundations</span><h2>Color</h2>
+      <h3 style="margin:18px 0 8px;font-size:1rem">Neutrals</h3>
+      <div class="sg-grid" data-swatches="--color-bg,--color-surface,--color-surface-2,--color-surface-sunk,--color-border,--color-border-strong,--color-ink,--color-ink-2,--color-ink-3"></div>
+      <h3 style="margin:22px 0 8px;font-size:1rem">Brand &amp; semantic</h3>
+      <div class="sg-grid" data-swatches="--color-accent,--relay-orange-600,--color-ink-dark,--color-ok,--color-over,--color-warn,--color-link"></div>
+      <h3 style="margin:22px 0 8px;font-size:1rem">Category palette (charts / donut)</h3>
+      <div class="sg-grid" data-swatches="--cat-1,--cat-2,--cat-3,--cat-4,--cat-5,--cat-6,--cat-7,--cat-8,--cat-9,--cat-10"></div>
+    </section>
+
+    <!-- TYPE -->
+    <section class="sg-section">
+      <span class="caps">Foundations</span><h2>Typography</h2>
+      <div class="sg-tile">
+        <div class="sg-type-row"><span class="caps">Display</span><span class="display" style="font-size:var(--fs-display)">Convert more consults</span></div>
+        <div class="sg-type-row"><span class="caps">H1</span><span style="font-size:var(--fs-h1);font-weight:700">Performance overview</span></div>
+        <div class="sg-type-row"><span class="caps">H2</span><span style="font-size:var(--fs-h2);font-weight:700">By channel</span></div>
+        <div class="sg-type-row"><span class="caps">H3</span><span style="font-size:var(--fs-h3);font-weight:650">Conversion funnel</span></div>
+        <div class="sg-type-row"><span class="caps">Body</span><span>The quick brown fox jumps over the lazy dog.</span></div>
+        <div class="sg-type-row"><span class="caps">Small</span><span style="font-size:var(--fs-sm)">Secondary copy and helper text.</span></div>
+        <div class="sg-type-row"><span class="caps">Caps</span><span class="caps">Section label</span></div>
+        <div class="sg-type-row" style="border:none"><span class="caps">Numerals</span><span class="num" style="font-size:1.6rem;font-weight:700">$24,180.50</span></div>
+      </div>
+    </section>
+
+    <!-- BUTTONS -->
+    <section class="sg-section">
+      <span class="caps">Components</span><h2>Buttons</h2>
+      <div class="sg-tile sg-row">
+        <button class="btn btn--primary">Primary action</button>
+        <button class="btn">Secondary</button>
+        <button class="btn btn--ghost">Ghost</button>
+        <button class="btn btn--dark">Dark / toggle</button>
+        <span class="select-btn">This month</span>
+        <button class="btn btn--sm">Small</button>
+        <button class="btn btn--primary btn--lg">Large primary</button>
+        <button class="btn" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <!-- CHIPS / PILLS / TAGS -->
+    <section class="sg-section">
+      <span class="caps">Components</span><h2>Chips, pills &amp; tags</h2>
+      <div class="sg-tile">
+        <div class="caps" style="margin-bottom:10px">Selectable chips</div>
+        <div class="sg-row" style="margin-bottom:20px">
+          <button class="chip chip--on">👃 Rhinoplasty</button>
+          <button class="chip">🌸 Breast aug</button>
+          <button class="chip">💗 Mommy makeover</button>
+          <button class="chip">💉 Injectables</button>
+        </div>
+        <div class="caps" style="margin-bottom:10px">Status pills</div>
+        <div class="sg-row" style="margin-bottom:20px">
+          <span class="pill pill--hot">hot · 92</span>
+          <span class="pill pill--warm">warm · 58</span>
+          <span class="pill pill--cold">cold · 30</span>
+          <span class="pill pill--ok"><span class="dot"></span>On time</span>
+          <span class="pill pill--over"><span class="dot"></span>4h over</span>
+          <span class="pill pill--source">Instagram</span>
+        </div>
+        <div class="caps" style="margin-bottom:10px">Tags (colored dot)</div>
+        <div class="sg-row">
+          <span class="tag"><span class="dot" style="background:var(--cat-3)"></span>Subscription</span>
+          <span class="tag"><span class="dot" style="background:var(--cat-10)"></span>DoorDash</span>
+          <span class="tag"><span class="dot" style="background:var(--cat-2)"></span>Etsy</span>
+          <span class="tag"><span class="dot" style="background:var(--cat-5)"></span>Reimbursable</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEGMENTED + TABS -->
+    <section class="sg-section">
+      <span class="caps">Components</span><h2>Segmented &amp; tabs</h2>
+      <div class="sg-tile">
+        <div class="seg" style="margin-bottom:22px">
+          <button class="is-active">Total amounts</button><button>Change over time</button>
+        </div>
+        <div class="tabs">
+          <button class="tab">Cash Flow</button><button class="tab is-active">Spending</button><button class="tab">Income</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARDS / KPI / STAT -->
+    <section class="sg-section">
+      <span class="caps">Components</span><h2>Cards, KPIs &amp; stats</h2>
+      <div class="kpis" style="margin-bottom:16px">
+        <div class="kpi"><div class="kpi__label">Attributed revenue</div><div class="kpi__value">$33,500</div><div class="kpi__sub">in window</div></div>
+        <div class="kpi"><div class="kpi__label">Lead → booked</div><div class="kpi__value">17%</div><div class="kpi__sub">of contacts</div></div>
+        <div class="kpi"><div class="kpi__label">Median time-to-send</div><div class="kpi__value">10.0h</div><div class="kpi__sub">north star</div></div>
+        <div class="kpi"><div class="kpi__label">Blended ROAS</div><div class="kpi__value">4.1×</div><div class="kpi__sub">revenue / spend</div></div>
+      </div>
+      <div class="card" style="max-width:480px">
+        <div class="row spread"><div class="card__title" style="margin:0">Budget <span class="dim" style="font-weight:400">December</span></div><span class="select-btn">Summary</span></div>
+        <div class="row spread" style="margin:16px 0 6px"><strong>Expenses</strong><span class="dim">$5,190 budget</span></div>
+        <div class="progress"><i style="width:68%"></i></div>
+        <div class="row spread" style="margin-top:8px"><strong class="num">$3,508 spent</strong><span class="num pos">$1,682 remaining</span></div>
+      </div>
+    </section>
+
+    <!-- LIST ROWS -->
+    <section class="sg-section">
+      <span class="caps">Components</span><h2>List rows</h2>
+      <div class="card" style="max-width:520px;padding:8px 16px">
+        <div class="lrow"><span class="lrow__icon">🎯</span><div class="lrow__main"><strong>Priya N.</strong><span>Mommy makeover · Instagram</span></div><div class="lrow__amt num">$24,000</div><span class="lrow__chev">›</span></div>
+        <div class="lrow"><span class="lrow__icon">👃</span><div class="lrow__main"><strong>Daniela R.</strong><span>Rhinoplasty · Google</span></div><div class="lrow__amt num pos">Booked</div><span class="lrow__chev">›</span></div>
+        <div class="lrow"><span class="lrow__icon">🌸</span><div class="lrow__main"><strong>Mei L.</strong><span>Breast aug · RealSelf</span></div><div class="lrow__amt num neg">4h over</div><span class="lrow__chev">›</span></div>
+      </div>
+    </section>
+
+    <!-- CHARTS: donut + legend -->
+    <section class="sg-section">
+      <span class="caps">Data viz</span><h2>Donut &amp; legend</h2>
+      <div class="card" style="display:flex;gap:32px;align-items:center;flex-wrap:wrap">
+        <div data-donut style="width:170px;height:170px;border-radius:50%;flex:none;position:relative">
+          <div style="position:absolute;inset:26px;background:var(--color-surface);border-radius:50%;display:grid;place-items:center;text-align:center">
+            <div><div class="num" style="font-weight:700;font-size:1.2rem">$3,528</div><div class="caps">Total</div></div>
+          </div>
+        </div>
+        <div class="legend" style="flex:1;min-width:240px">
+          <div class="legend__item"><span class="dot" style="background:var(--cat-1)"></span><b>Mortgage</b><span>39%</span></div>
+          <div class="legend__item"><span class="dot" style="background:var(--cat-2)"></span><b>Loan</b><span>14%</span></div>
+          <div class="legend__item"><span class="dot" style="background:var(--cat-3)"></span><b>Garbage</b><span>9%</span></div>
+          <div class="legend__item"><span class="dot" style="background:var(--cat-4)"></span><b>Home</b><span>6%</span></div>
+          <div class="legend__item"><span class="dot" style="background:var(--cat-5)"></span><b>Insurance</b><span>6%</span></div>
+          <div class="legend__item"><span class="dot" style="background:var(--cat-6)"></span><b>Phone</b><span>4%</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMS -->
+    <section class="sg-section">
+      <span class="caps">Components</span><h2>Forms</h2>
+      <div class="sg-tile" style="max-width:420px">
+        <label class="field"><span>First name</span><input type="text" placeholder="Your first name" value="Priya"></label>
+        <label class="field"><span>Procedure</span><select><option>Rhinoplasty</option><option>Breast augmentation</option></select></label>
+        <label class="field" style="margin:0"><span>Notes</span><textarea placeholder="Add a note…"></textarea></label>
+        <label class="check" style="margin-top:14px"><input type="checkbox" checked> <span>I consent to share these photos with the practice.</span></label>
+      </div>
+    </section>
+
+    <p class="muted center" style="margin-top:48px">RELAY Design System · driven entirely by <code>tokens.css</code> + <code>app.css</code></p>
+  </div>
+
+  <script>
+    /* color swatches read live token values so this stays in sync with tokens.css */
+    var cs = getComputedStyle(document.documentElement);
+    function val(v){ return cs.getPropertyValue(v).trim(); }
+    document.querySelectorAll('[data-swatches]').forEach(function(host){
+      host.innerHTML = host.getAttribute('data-swatches').split(',').map(function(v){
+        return '<div class="sg-swatch"><div class="sg-swatch__chip" style="background:'+val(v)+'"></div>'+
+          '<div class="sg-swatch__meta"><b>'+v.replace('--color-','').replace('--','')+'</b><code>'+val(v)+'</code></div></div>';
+      }).join('');
+    });
+    /* conic donut from the category palette */
+    var d = document.querySelector('[data-donut]');
+    if (d) {
+      var segs = [['--cat-1',39],['--cat-2',14],['--cat-3',9],['--cat-4',6],['--cat-5',6],['--cat-6',4],['--cat-7',22]];
+      var acc = 0, stops = segs.map(function(s){ var a=acc, b=acc+s[1]; acc=b; return val(s[0])+' '+a+'% '+b+'%'; });
+      d.style.background = 'conic-gradient('+stops.join(',')+')';
+    }
+  </script>
+</body>
+</html>
