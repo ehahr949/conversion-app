@@ -28,7 +28,8 @@ Or just open `index.html` from disk (`file://`) — everything is client-side.
 | `widgets.html` | Widget gallery (inline / floating / takeover) + copy-paste snippets | §8.1 |
 | `bio.html` | Link-in-bio page | §8.1 |
 | `embed.js` | The embeddable widget script | §8.1 |
-| `styleguide.html` | Living design-system reference — every token + component on one page | — |
+| `styleguide.html` | Internal design-system reference (console/dense surfaces) | — |
+| `funnel-styleguide.html` | Public **Funnel** design-system reference (conversion surfaces) | — |
 
 The console routes by hash: `#/queue` · `#/performance` · `#/settings` ·
 `#/studio/<leadId>` · `#/studio-intro`.
@@ -61,11 +62,16 @@ fake sends, pixel fires (full payload), and instrumentation events.
   silhouette frame (used as the live on-camera alignment overlay) and a
   pose/expression instruction (e.g. face → resting/smiling/brows/profiles;
   breast → front/oblique/side; body → front/oblique/side/back).
-- **Design system** — one token set (`css/tokens.css`) matched to the Monarch
-  app: warm off-white canvas, pure-white cards with big radius and no borders,
-  near-black ink + black buttons, monarch-orange as the single pop accent,
-  green only as a positive/financial semantic. The console uses a left sidebar
-  shell. White-label still re-themes patient surfaces via `--brand-*`.
+- **Design system — shared tokens, two component forks.** `css/tokens.css` is the
+  single foundation (brand + neutrals; white-label theming via `--brand-*`).
+  Two component layers fork from it:
+  - `css/app.css` — **internal** system (console/settings/performance): dense,
+    data-rich, Monarch-matched (warm field, white cards, left sidebar, quiet
+    typographic status instead of filled pills). Reference: `styleguide.html`.
+  - `css/funnel.css` — **public** system (flow, portal, link-in-bio, pricing):
+    airy and conversion-optimized — one bold CTA per screen, big type, large
+    tap targets, minimal chrome. Reference: `funnel-styleguide.html`.
+  A page loads `tokens.css` + exactly one of the two component layers.
 - **Built for real** (not faked): attribution parse-in + channel resolution
   (`js/attribution.js`), the offline-conversion export, the ScriptGen template
   (`js/scriptgen.js`), consent capture, and the whole conversion experience.

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RELAY — Funnel Design System</title>
+  <link rel="stylesheet" href="css/tokens.css?v=6">
+  <link rel="stylesheet" href="css/funnel.css?v=6">
+</head>
+<body>
+  <header class="appbar">
+    <span class="appbar__brand"><span class="appbar__logo">R</span> Funnel system</span>
+    <nav><a href="styleguide.html">Internal system</a><a href="flow.html">Live flow</a></nav>
+  </header>
+
+  <div class="sg-wrap">
+    <div class="f-hero" style="margin-bottom:56px">
+      <span class="f-eyebrow">Public conversion system</span>
+      <h1 class="display">Built to convert — nothing in the way</h1>
+      <p>A fork of the RELAY design system for lead-facing funnels. Same brand tokens, a simpler component language: one bold action per screen, big type, generous space, large tap targets. Theme it per brand via <code>--brand-*</code>.</p>
+      <div class="f-steps" style="margin-bottom:20px"><i class="is-done"></i><i class="is-done"></i><i class="is-on"></i><i></i><i></i></div>
+      <button class="btn btn--primary btn--lg">Start my consult</button>
+    </div>
+
+    <section class="sg-section">
+      <span class="caps">Buttons</span>
+      <div class="sg-tile sg-row">
+        <button class="btn btn--primary btn--lg">Primary CTA</button>
+        <button class="btn">Secondary</button>
+        <button class="btn btn--ghost">Skip for now</button>
+        <button class="btn btn--primary" disabled>Disabled</button>
+      </div>
+      <p class="dim" style="font-size:.9rem;margin-top:10px">One converting CTA per screen (brand-colored, elevated). Everything else stays quiet.</p>
+    </section>
+
+    <section class="sg-section">
+      <span class="caps">Big options &amp; chips</span>
+      <div class="sg-tile">
+        <div class="optrow is-on"><span class="optrow__radio"></span><span>As soon as possible</span></div>
+        <div class="optrow"><span class="optrow__radio"></span><span>In the next 1–3 months</span></div>
+        <div class="chipwrap" style="margin-top:18px">
+          <button class="chip chip--on">👃 Rhinoplasty</button>
+          <button class="chip">🌸 Breast aug</button>
+          <button class="chip">💗 Mommy makeover</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="sg-section">
+      <span class="caps">Value props &amp; trust</span>
+      <div class="sg-tile">
+        <div class="howto">
+          <div class="howto__step"><div class="howto__n">1</div><div><strong>Tell us your goals</strong><br><span class="dim">A few quick taps — no forms.</span></div></div>
+          <div class="howto__step"><div class="howto__n">2</div><div><strong>Get a personal video</strong><br><span class="dim">From the surgeon, about your situation.</span></div></div>
+          <div class="howto__step"><div class="howto__n">3</div><div><strong>Decide on your terms</strong><br><span class="dim">Watch and book if it feels right.</span></div></div>
+        </div>
+        <div class="trustpills" style="margin-top:8px"><span class="pill">🔒 Private &amp; secure</span><span class="pill">⚡ Reply within 24h</span><span class="pill">🎥 Real surgeon</span></div>
+      </div>
+    </section>
+
+    <section class="sg-section">
+      <span class="caps">Inputs</span>
+      <div class="sg-tile" style="max-width:420px">
+        <label class="field"><span>First name</span><input type="text" placeholder="Your first name" value="Priya"></label>
+        <label class="field" style="margin:0"><span>Email</span><input type="email" placeholder="you@email.com"></label>
+        <label class="check" style="margin-top:14px"><input type="checkbox" checked> <span>Text me my consult video. Msg &amp; data rates may apply.</span></label>
+      </div>
+    </section>
+
+    <section class="sg-section">
+      <span class="caps">Recap &amp; testimonial</span>
+      <div class="sg-row" style="align-items:stretch">
+        <div class="recap" style="flex:1;min-width:260px">
+          <h4>Here’s what you told us</h4>
+          <div class="recap__row"><span class="muted">Interested in</span><strong>Mommy makeover</strong></div>
+          <div class="recap__row"><span class="muted">Timeline</span><strong>As soon as possible</strong></div>
+          <div class="recap__row"><span class="muted">Investment</span><strong>Budget set aside</strong></div>
+        </div>
+        <div class="f-testimonial" style="flex:1;min-width:260px">
+          <p>“I watched my video the same night and booked the next morning. It felt personal, not salesy.”</p>
+          <div class="row"><span class="avatar">RM</span><div><strong>Renata M.</strong><br><span class="dim" style="font-size:.85rem">Mommy makeover patient</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sg-section">
+      <span class="caps">Link rows (portal / link-in-bio)</span>
+      <div class="linklist" style="max-width:420px">
+        <a href="#">🎥 Get my personal consult video</a>
+        <a href="#">🖼 Before &amp; after gallery</a>
+        <a href="#">⭐ Read patient reviews</a>
+      </div>
+    </section>
+
+    <p class="muted center" style="margin-top:40px">RELAY Funnel system · <code>tokens.css</code> + <code>funnel.css</code></p>
+  </div>
+</body>
+</html>
